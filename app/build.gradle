@@ -25,7 +25,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    buildTypes.each {
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file("local.properties").newDataInputStream())
+        def openWeatherApiKey = properties.getProperty("openweather_api_key", "")
 
+        it.buildConfigField 'String', "API_KEY", openWeatherApiKey
+
+        it.resValue 'string', "api_key", openWeatherApiKey
+
+    }
     buildFeatures {
         viewBinding true
     }
