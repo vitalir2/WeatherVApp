@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello_blank_fragment">Приветственный фрагмент</string>
+    <string name="current_weather">Текущая погода</string>
+    <string name="saved_cities">Сохраненные города</string>
+    <string name="settings">Настройки</string>
+</resources>
