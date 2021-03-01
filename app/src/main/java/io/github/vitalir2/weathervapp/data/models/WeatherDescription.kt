@@ -1,6 +1,6 @@
-package io.github.vitalir2.weathervapp.data.remote.responses
+package io.github.vitalir2.weathervapp.data.models
 
-data class Weather(
+data class WeatherDescription(
     val description: String,
     val icon: String,
     val id: Int,

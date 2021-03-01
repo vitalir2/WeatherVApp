@@ -1,6 +1,8 @@
 package io.github.vitalir2.weathervapp.data.remote.responses
 
-data class ForecastSevenDaysResponse(
+import io.github.vitalir2.weathervapp.data.models.Daily
+
+data class WeatherForecastResponse(
     val daily: List<Daily>,
     val lat: Double,
     val lon: Double,

@@ -1,6 +1,6 @@
 package io.github.vitalir2.weathervapp.data.remote
 
-import io.github.vitalir2.weathervapp.data.remote.responses.ForecastSevenDaysResponse
+import io.github.vitalir2.weathervapp.data.remote.responses.WeatherForecastResponse
 import io.github.vitalir2.weathervapp.utils.API_KEY
 import retrofit2.Response
 import retrofit2.http.GET
@@ -15,5 +15,5 @@ interface WeatherApi {
         @Query("appid") apiKey: String = API_KEY,
         @Query("exclude") exclude: String = "current,minutely,hourly,alerts",
         @Query("lang") language: String = "ru"
-    ) : Response<ForecastSevenDaysResponse>
+    ) : Response<WeatherForecastResponse>
 }
