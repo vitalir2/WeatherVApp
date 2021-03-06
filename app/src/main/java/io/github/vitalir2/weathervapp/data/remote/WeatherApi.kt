@@ -14,6 +14,7 @@ interface WeatherApi {
         @Query("lon") longitude: Double,
         @Query("appid") apiKey: String = API_KEY,
         @Query("exclude") exclude: String = "current,minutely,hourly,alerts",
+        @Query("units") units: String = "metric",
         @Query("lang") language: String = "ru"
     ) : Response<WeatherForecastResponse>
 }
