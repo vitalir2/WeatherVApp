@@ -4,22 +4,18 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.Relation
+import io.github.vitalir2.weathervapp.data.models.Daily
 
 @Entity(tableName = "forecasts")
-data class WeatherForecastEntityProperties(
+data class WeatherForecastEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
 
     val lat: Double,
     val lon: Double,
-    val timezone: String
-)
+    val city: String,
+    val country: String,
 
-data class WeatherForecastEntity(
-    @Embedded val forecast: WeatherForecastEntityProperties,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "forecastId"
-    )
-    val weatherOnWeek: List<DailyEntity>
+    @Embedded
+    val daily: Daily
 )
