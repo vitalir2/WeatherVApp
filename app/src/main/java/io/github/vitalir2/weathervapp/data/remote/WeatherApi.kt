@@ -9,7 +9,7 @@ import retrofit2.http.Query
 interface WeatherApi {
 
     @GET("data/2.5/onecall")
-    suspend fun getForecastForSevenDays(
+    suspend fun getForecastWeather(
         @Query("lat") latitude: Double,
         @Query("lon") longitude: Double,
         @Query("appid") apiKey: String = API_KEY,

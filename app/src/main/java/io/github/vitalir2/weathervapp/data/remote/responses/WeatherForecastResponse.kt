@@ -6,5 +6,5 @@ data class WeatherForecastResponse(
     val lat: Double,
     val lon: Double,
     val timezone: String,
-    val daily: List<Daily>,
+    val forecasts: List<Daily>,
     )
