@@ -11,9 +11,6 @@
         android:name="io.github.vitalir2.weathervapp.ui.fragments.WeatherForecastFragment"
         android:label="fragment_weather_forecast"
         tools:layout="@layout/fragment_weather_forecast" >
-        <action
-            android:id="@+id/action_weatherForecastFragment_to_searchWeatherFragment"
-            app:destination="@id/searchWeatherFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchWeatherFragment"

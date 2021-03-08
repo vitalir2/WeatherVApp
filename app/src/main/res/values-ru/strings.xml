@@ -3,7 +3,10 @@
     <string name="current_weather">Текущая погода</string>
     <string name="saved_cities">Сохраненные города</string>
     <string name="settings">Настройки</string>
-    <string name="weather_item_image">Иконка погоды</string>
+    <string name="weather_item_image">Изображение текущей погоды</string>
+    <string name="wind_icon">Изображение ветра</string>
+    <string name="speed_metric">м/с</string>
+    <string name="find_city">Поиск города</string>
 
     <string-array name="DayOfWeek">
         <item>Понедельник</item>

@@ -8,6 +8,10 @@
         android:title="@string/saved_cities"
         android:icon="@drawable/ic_location_city" />
 
+    <item android:id="@+id/searchWeatherFragment"
+        android:title="@string/find_city"
+        android:icon="@drawable/ic_search" />
+
     <item android:id="@+id/settingsFragment"
         android:title="@string/settings"
         android:icon="@drawable/ic_settings" />

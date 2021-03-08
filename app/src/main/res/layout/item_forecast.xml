@@ -58,7 +58,7 @@
             android:layout_height="0dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/wind_image"
             app:layout_constraintStart_toEndOf="@id/weather_image"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintHorizontal_weight="4">
@@ -88,6 +88,31 @@
                 tools:text="-5" />
 
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/wind_image"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/temperature_layout"
+            app:layout_constraintEnd_toStartOf="@id/wind_speed"
+            app:layout_constraintHorizontal_weight="1"
+            android:src="@drawable/ic_wind"
+            android:contentDescription="@string/wind_icon"/>
+
+        <TextView
+            android:id="@+id/wind_speed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/wind_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="2"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:textAlignment="center"
+            tools:text="34"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

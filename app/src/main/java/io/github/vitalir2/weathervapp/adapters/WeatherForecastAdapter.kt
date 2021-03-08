@@ -60,6 +60,9 @@ class WeatherForecastAdapter : ListAdapter<Daily, WeatherForecastAdapter.ViewHol
                 .with(binding.root.context)
                 .load(url)
                 .into(binding.weatherImage)
+            val windSpeedString = daily.wind_speed.toInt().toString() + "\n"+
+                    binding.root.resources.getString(R.string.speed_metric)
+            binding.windSpeed.text = windSpeedString
         }
     }
 }
