@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello_blank_fragment">Приветственный фрагмент</string>
     <string name="current_weather">Текущая погода</string>
     <string name="saved_cities">Сохраненные города</string>
     <string name="settings">Настройки</string>
+    <string name="weather_item_image">Иконка погоды</string>
+
+    <string-array name="DayOfWeek">
+        <item>Понедельник</item>
+        <item>Вторник</item>
+        <item>Среда</item>
+        <item>Четверг</item>
+        <item>Пятница</item>
+        <item>Суббота</item>
+        <item>Воскресенье</item>
+    </string-array>
 </resources>

@@ -1,7 +1,18 @@
 <resources>
-    <string name="app_name" translatable="false">WeatherVApp</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_name" translatable="false">WeatherV</string>
     <string name="current_weather">Current weather</string>
     <string name="saved_cities">Saved cities</string>
     <string name="settings">Settings</string>
+    <string name="weather_item_image">WeatherIcon</string>
+    <string name="weather_divider" translatable="false">" / "</string>
+
+    <string-array name="DayOfWeek">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
 </resources>

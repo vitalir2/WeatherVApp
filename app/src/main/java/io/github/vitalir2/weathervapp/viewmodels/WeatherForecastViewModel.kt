@@ -27,7 +27,7 @@ class WeatherForecastViewModel @Inject constructor(
                 is Resource.Success -> {
                     if (!result.data.isNullOrEmpty()) {
                         _forecasts.value = result.data
-                    //    Log.d("ViewModel", "GetData")
+                        Log.d("ViewModel", "GetData")
                     }
                 }
             }

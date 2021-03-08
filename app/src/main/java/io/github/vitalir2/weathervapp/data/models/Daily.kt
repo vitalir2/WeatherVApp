@@ -4,7 +4,7 @@ import androidx.room.Embedded
 
 data class Daily(
 //    val clouds: Int,
-    val dt: Int,
+    val dt: Long,
     val humidity: Int,
     val pop: Double,
     val pressure: Int,

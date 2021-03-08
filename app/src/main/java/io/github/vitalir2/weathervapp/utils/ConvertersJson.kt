@@ -6,7 +6,7 @@ import com.google.gson.reflect.TypeToken
 import io.github.vitalir2.weathervapp.data.models.WeatherDescription
 import java.lang.reflect.Type
 
-class ConverterJson {
+class ConvertersJson {
     private val gson = Gson()
     private val type: Type = object : TypeToken<List<WeatherDescription>>() {}.type
 
