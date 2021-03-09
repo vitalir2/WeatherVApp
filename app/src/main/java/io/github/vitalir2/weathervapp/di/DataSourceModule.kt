@@ -4,6 +4,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import io.github.vitalir2.weathervapp.data.local.WeatherForecastLocalDataSource
+import io.github.vitalir2.weathervapp.data.local.WeatherForecastLocalDataSourceImpl
 import io.github.vitalir2.weathervapp.data.remote.WeatherForecastRemoteDataSource
 import io.github.vitalir2.weathervapp.data.remote.WeatherForecastRemoteDataSourceImpl
 import javax.inject.Singleton
@@ -17,4 +19,10 @@ abstract class DataSourceModule {
     abstract fun provideWeatherForecastRemoteDataSource(
         weatherForecastRemoteDataSourceImpl: WeatherForecastRemoteDataSourceImpl
     ): WeatherForecastRemoteDataSource
+
+    @Singleton
+    @Binds
+    abstract fun provideWeatherForecastLocalDataSource(
+        weatherForecastLocalDataSourceImpl: WeatherForecastLocalDataSourceImpl
+    ): WeatherForecastLocalDataSource
 }

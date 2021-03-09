@@ -6,7 +6,6 @@ import io.github.vitalir2.weathervapp.data.models.Daily
 data class WeatherForecastResponse(
     val lat: Double,
     val lon: Double,
-    val timezone: String,
     @SerializedName("daily")
-    val forecasts: List<Daily>,
-    )
+    val forecasts: List<Daily>
+)

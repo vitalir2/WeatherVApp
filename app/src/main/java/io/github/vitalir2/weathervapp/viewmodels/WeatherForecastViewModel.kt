@@ -25,9 +25,9 @@ class WeatherForecastViewModel @Inject constructor(
           //  Log.d("ViewModel", "In view Model")
             when (val result = weatherForecastRepository.getForecastWeather(latitude, longitude)) {
                 is Resource.Success -> {
-                    if (!result.data.isNullOrEmpty()) {
-                        _forecasts.value = result.data
-                        Log.d("ViewModel", "GetData")
+                    if (!result.data?.forecasts.isNullOrEmpty()) {
+                        _forecasts.value = result.data?.forecasts
+                       // Log.d("ViewModel", "GetData")
                     }
                 }
             }
