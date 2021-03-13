@@ -10,11 +10,16 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface WeatherForecastDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertWeatherForecastList(weatherForecastEntity: List<WeatherForecastEntity>)
+    suspend fun insertWeatherForecast(weatherForecastEntity: WeatherForecastEntity)
 
-    @Query("DELETE FROM forecasts WHERE lat == :latitude AND lon == :longitude")
-    suspend fun deleteWeatherForecasts(latitude: Double, longitude: Double)
+    @Query("DELETE FROM forecasts WHERE lat = :latitude AND lon = :longitude")
+    suspend fun deleteWeatherForecast(latitude: Long, longitude: Long)
 
-    @Query("SELECT * FROM forecasts WHERE lat == :latitude AND lon == :longitude")
-    fun getWeatherForecasts(latitude: Double, longitude: Double): Flow<List<WeatherForecastEntity>>
+
+    @Query("SELECT * FROM forecasts WHERE lat = :latitude AND lon = :longitude LIMIT 1")
+    suspend fun getWeatherForecast(latitude: Long, longitude: Long): WeatherForecastEntity
+
+    // Function for testing
+    @Query("SELECT * FROM forecasts LIMIT 1")
+    suspend fun getRandomForecast(): WeatherForecastEntity
 }

@@ -12,9 +12,11 @@ interface WeatherForecastRepository {
         longitude: Double
     ): Resource<WeatherForecast?>
 
-    suspend fun insertWeatherForecastList(weatherForecastList: List<WeatherForecastEntity>)
+    suspend fun insertWeatherForecast(weatherForecastEntity: WeatherForecastEntity)
 
-    suspend fun deleteWeatherForecasts(latitude: Double, longitude: Double)
+    suspend fun deleteWeatherForecast(latitude: Double, longitude: Double)
 
-    fun getWeatherForecasts(latitude: Double, longitude: Double): Flow<List<WeatherForecastEntity>>
+    suspend fun getWeatherForecast(latitude: Double, longitude: Double): WeatherForecast
+
+    suspend fun getRandomForecast(): WeatherForecast
 }

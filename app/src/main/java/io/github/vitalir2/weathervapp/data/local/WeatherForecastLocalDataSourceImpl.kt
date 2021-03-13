@@ -1,22 +1,25 @@
 package io.github.vitalir2.weathervapp.data.local
 
 import io.github.vitalir2.weathervapp.data.local.entities.WeatherForecastEntity
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class WeatherForecastLocalDataSourceImpl @Inject constructor(
     private val weatherForecastDao: WeatherForecastDao
 ) : WeatherForecastLocalDataSource {
 
-    override suspend fun insertWeatherForecastList(weatherForecastList: List<WeatherForecastEntity>) {
-        weatherForecastDao.insertWeatherForecastList(weatherForecastList)
+    override suspend fun insertWeatherForecast(weatherForecastEntity: WeatherForecastEntity) {
+        weatherForecastDao.insertWeatherForecast(weatherForecastEntity)
     }
 
-    override suspend fun deleteWeatherForecasts(latitude: Double, longitude: Double) {
-        weatherForecastDao.deleteWeatherForecasts(latitude, longitude)
+    override suspend fun deleteWeatherForecast(latitude: Long, longitude: Long) {
+        weatherForecastDao.deleteWeatherForecast(latitude, longitude)
     }
 
-    override fun getWeatherForecasts(latitude: Double, longitude: Double): Flow<List<WeatherForecastEntity>> {
-        return weatherForecastDao.getWeatherForecasts(latitude, longitude)
+    override suspend fun getWeatherForecast(latitude: Long, longitude: Long): WeatherForecastEntity {
+        return weatherForecastDao.getWeatherForecast(latitude, longitude)
+    }
+
+    override suspend fun getRandomForecast(): WeatherForecastEntity {
+        return weatherForecastDao.getRandomForecast()
     }
 }

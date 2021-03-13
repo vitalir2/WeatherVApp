@@ -8,6 +8,7 @@
     <string name="wind_icon">Wind icon</string>
     <string name="speed_metric">m/s</string>
     <string name="find_city">Find city</string>
+    <string name="internet_error">Internet error, try later</string>
 
     <string-array name="DayOfWeek">
         <item>Monday</item>

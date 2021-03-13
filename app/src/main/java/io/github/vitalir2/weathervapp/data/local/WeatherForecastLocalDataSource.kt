@@ -5,9 +5,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface WeatherForecastLocalDataSource {
 
-    suspend fun insertWeatherForecastList(weatherForecastList: List<WeatherForecastEntity>)
+    suspend fun insertWeatherForecast(weatherForecastEntity: WeatherForecastEntity)
 
-    suspend fun deleteWeatherForecasts(latitude: Double, longitude: Double)
+    suspend fun deleteWeatherForecast(latitude: Long, longitude: Long)
 
-    fun getWeatherForecasts(latitude: Double, longitude: Double): Flow<List<WeatherForecastEntity>>
+    suspend fun getWeatherForecast(latitude: Long, longitude: Long): WeatherForecastEntity
+
+    suspend fun getRandomForecast(): WeatherForecastEntity
 }

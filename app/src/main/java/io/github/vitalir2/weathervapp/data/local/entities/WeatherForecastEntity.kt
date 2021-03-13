@@ -6,16 +6,12 @@ import androidx.room.PrimaryKey
 import androidx.room.Relation
 import io.github.vitalir2.weathervapp.data.models.Daily
 
-@Entity(tableName = "forecasts")
+@Entity(tableName = "forecasts", primaryKeys = ["lat", "lon"])
 data class WeatherForecastEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long,
+    val lat: Long,
+    val lon: Long,
+    val city: String? = null,
+    val country: String? = null,
 
-    val lat: Double,
-    val lon: Double,
-    val city: String,
-    val country: String,
-
-    @Embedded
-    val daily: Daily
+    val dailies: List<Daily>
 )

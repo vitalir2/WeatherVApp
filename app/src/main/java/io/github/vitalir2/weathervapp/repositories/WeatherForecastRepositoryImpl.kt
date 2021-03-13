@@ -2,12 +2,12 @@ package io.github.vitalir2.weathervapp.repositories
 
 import io.github.vitalir2.weathervapp.data.local.WeatherForecastLocalDataSource
 import io.github.vitalir2.weathervapp.data.local.entities.WeatherForecastEntity
-import io.github.vitalir2.weathervapp.data.models.Daily
 import io.github.vitalir2.weathervapp.data.models.WeatherForecast
 import io.github.vitalir2.weathervapp.data.remote.WeatherForecastRemoteDataSource
+import io.github.vitalir2.weathervapp.utils.Converters
 import io.github.vitalir2.weathervapp.utils.Resource
+import io.github.vitalir2.weathervapp.utils.toCoordinateLong
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -40,18 +40,32 @@ class WeatherForecastRepositoryImpl @Inject constructor(
             }
         }
 
-    override suspend fun insertWeatherForecastList(weatherForecastList: List<WeatherForecastEntity>) {
-        weatherForecastLocalDataSource.insertWeatherForecastList(weatherForecastList)
+    override suspend fun insertWeatherForecast(weatherForecastEntity: WeatherForecastEntity) {
+        weatherForecastLocalDataSource.insertWeatherForecast(weatherForecastEntity)
     }
 
-    override suspend fun deleteWeatherForecasts(latitude: Double, longitude: Double) {
-        weatherForecastLocalDataSource.deleteWeatherForecasts(latitude, longitude)
+    override suspend fun deleteWeatherForecast(latitude: Double, longitude: Double) {
+        weatherForecastLocalDataSource.deleteWeatherForecast(
+            latitude.toCoordinateLong(),
+            longitude.toCoordinateLong()
+        )
     }
 
-    override fun getWeatherForecasts(
+    override suspend fun getWeatherForecast(
         latitude: Double,
         longitude: Double
-    ): Flow<List<WeatherForecastEntity>> {
-        return weatherForecastLocalDataSource.getWeatherForecasts(latitude, longitude)
+    ): WeatherForecast {
+        val converter = Converters()
+        val result = weatherForecastLocalDataSource.getWeatherForecast(
+            latitude.toCoordinateLong(),
+            longitude.toCoordinateLong()
+        )
+        return converter.fromDatabaseToModelForecast(result)
+    }
+
+    override suspend fun getRandomForecast(): WeatherForecast {
+        val converter = Converters()
+        val result = weatherForecastLocalDataSource.getRandomForecast()
+        return converter.fromDatabaseToModelForecast(result)
     }
 }

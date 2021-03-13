@@ -1,7 +1,6 @@
 package io.github.vitalir2.weathervapp.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.vitalir2.weathervapp.adapters.WeatherForecastAdapter
 import io.github.vitalir2.weathervapp.databinding.FragmentWeatherForecastBinding
@@ -37,9 +35,9 @@ class WeatherForecastFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setRecyclerView()
         // Temporary coordinates of Moscow
-        val moscowLatitude = 55.751244
-        val moscowLongitude = 37.618423
-        if (viewModel.forecasts.value == null) {
+        val moscowLatitude = 55.7512
+        val moscowLongitude = 37.6184
+        if (viewModel.forecast.value == null) {
             viewModel.getWeatherForecast(moscowLatitude, moscowLongitude)
         }
         observeForecasts()
@@ -55,9 +53,19 @@ class WeatherForecastFragment : Fragment() {
     }
 
     private fun observeForecasts() {
-        viewModel.forecasts.observe(viewLifecycleOwner, {
-            adapter.submitList(it)
+        viewModel.forecast.observe(viewLifecycleOwner, { list ->
+            adapter.submitList(list?.forecasts)
         })
+        viewModel.isLoading.observe(viewLifecycleOwner, { state ->
+            showViewIfCondition(binding.forecastLoading, state)
+        })
+        viewModel.weatherGetState.observe(viewLifecycleOwner, { state ->
+            showViewIfCondition(binding.getWeatherErrorText, !state)
+        })
+    }
+
+    private fun showViewIfCondition(view: View, condition: Boolean) {
+        view.visibility = if (condition) View.VISIBLE else View.GONE
     }
 
     override fun onDestroy() {

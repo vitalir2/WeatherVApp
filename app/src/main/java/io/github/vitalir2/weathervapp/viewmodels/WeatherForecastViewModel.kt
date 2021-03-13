@@ -1,13 +1,11 @@
 package io.github.vitalir2.weathervapp.viewmodels
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.vitalir2.weathervapp.data.models.Daily
+import io.github.vitalir2.weathervapp.data.models.WeatherForecast
 import io.github.vitalir2.weathervapp.repositories.WeatherForecastRepository
+import io.github.vitalir2.weathervapp.utils.Converters
 import io.github.vitalir2.weathervapp.utils.Resource
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,19 +15,60 @@ class WeatherForecastViewModel @Inject constructor(
     private val weatherForecastRepository: WeatherForecastRepository
 ) : ViewModel() {
 
-    private val _forecasts = MutableLiveData<List<Daily>?>()
-    val forecasts: LiveData<List<Daily>?> = _forecasts
+    private val _forecast = MutableLiveData<WeatherForecast?>()
+    val forecast: LiveData<WeatherForecast?> = _forecast
+
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading = _isLoading
+
+    private val _weatherGetState = MutableLiveData<Boolean>()
+    val weatherGetState = _weatherGetState
 
     fun getWeatherForecast(latitude: Double, longitude: Double) {
+        _isLoading.value = true
         viewModelScope.launch {
-          //  Log.d("ViewModel", "In view Model")
-            when (val result = weatherForecastRepository.getForecastWeather(latitude, longitude)) {
+            when (val result =
+                weatherForecastRepository.getForecastWeather(latitude, longitude)) {
                 is Resource.Success -> {
-                    if (!result.data?.forecasts.isNullOrEmpty()) {
-                        _forecasts.value = result.data?.forecasts
-                       // Log.d("ViewModel", "GetData")
+                    _isLoading.postValue(false)
+                    if (result.data != null) {
+                        _weatherGetState.postValue(true)
+                        _forecast.value = result.data
+                        forecast.value?.let { forecast ->
+                            val converter = Converters()
+                            weatherForecastRepository.insertWeatherForecast(
+                                converter.fromModelToDatabaseForecast(forecast)
+                            )
+                        }
                     }
                 }
+                is Resource.Error -> {
+                    Log.d("HERE", "No connection or something else")
+                    result.message?.let { Log.d("HERE", it) }
+                    getWeatherForecastFromLocal(latitude, longitude)
+                }
+                is Resource.Loading -> {
+                    _isLoading.postValue(true)
+                }
+            }
+        }
+    }
+
+    private fun getWeatherForecastFromLocal(latitude: Double, longitude: Double) {
+        viewModelScope.launch {
+            Log.d("HERE", "Now I'm in database, lat=$latitude, lon=$longitude")
+            _isLoading.postValue(true)
+            try {
+                val result = weatherForecastRepository.getWeatherForecast(
+                    latitude,
+                    longitude)
+                _forecast.postValue(result)
+                _isLoading.postValue(false)
+                _weatherGetState.postValue(true)
+            } catch (exception: Throwable) {
+                Log.d("HERE", "Error: ${exception.message}")
+                _isLoading.postValue(false )
+                _weatherGetState.postValue(false)
             }
         }
     }

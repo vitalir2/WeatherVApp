@@ -17,4 +17,5 @@
         <item>Суббота</item>
         <item>Воскресенье</item>
     </string-array>
+    <string name="internet_error">Ошибка сети, повторите позже</string>
 </resources>

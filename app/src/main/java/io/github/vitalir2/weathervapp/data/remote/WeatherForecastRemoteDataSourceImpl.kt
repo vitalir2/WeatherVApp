@@ -3,6 +3,7 @@ package io.github.vitalir2.weathervapp.data.remote
 import android.util.Log
 import io.github.vitalir2.weathervapp.data.models.Daily
 import io.github.vitalir2.weathervapp.data.models.WeatherForecast
+import io.github.vitalir2.weathervapp.utils.Converters
 import io.github.vitalir2.weathervapp.utils.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -25,12 +26,9 @@ class WeatherForecastRemoteDataSourceImpl @Inject constructor(
                 val response = weatherApi.getForecastWeather(latitude, longitude)
                 //Log.d(TAG, "GetWeather")
                 if (response.isSuccessful) {
-                    val forecast = response.body()?.forecasts?.let { forecasts ->
-                        WeatherForecast(
-                            lat = latitude,
-                            lon = longitude,
-                            forecasts = forecasts
-                        )
+                    val converter = Converters()
+                    val forecast = response.body()?.let { result ->
+                        converter.fromRemoteToModelForecast(result)
                     }
                     Resource.Success(forecast)
                    /* Log.d(TAG, "Success")
@@ -51,7 +49,7 @@ class WeatherForecastRemoteDataSourceImpl @Inject constructor(
             } catch (exception: Exception) {
                 when(exception) {
                     is IOException -> Resource.Error("Network Failure")
-                    else -> Resource.Error("Error")
+                    else -> Resource.Error(exception.message ?: "Error")
                 }
             }
         }

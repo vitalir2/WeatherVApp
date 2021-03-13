@@ -1,5 +1,7 @@
 package io.github.vitalir2.weathervapp.utils
 
+import io.github.vitalir2.weathervapp.data.local.entities.WeatherForecastEntity
+import io.github.vitalir2.weathervapp.data.models.Daily
 import io.github.vitalir2.weathervapp.data.models.WeatherForecast
 import io.github.vitalir2.weathervapp.data.remote.responses.WeatherForecastResponse
 
@@ -28,4 +30,23 @@ class Converters {
         )
     }
 
+    fun fromModelToDatabaseForecast(
+        weatherForecast: WeatherForecast
+    ): WeatherForecastEntity {
+        return WeatherForecastEntity(
+            lat = weatherForecast.lat.toCoordinateLong(),
+            lon = weatherForecast.lon.toCoordinateLong(),
+            dailies = weatherForecast.forecasts
+        )
+    }
+
+    fun fromDatabaseToModelForecast(
+        weatherForecastEntity: WeatherForecastEntity
+    ): WeatherForecast {
+        return WeatherForecast(
+            lat = weatherForecastEntity.lat.toCoordinateDouble(),
+            lon = weatherForecastEntity.lon.toCoordinateDouble(),
+            forecasts = weatherForecastEntity.dailies
+        )
+    }
 }
