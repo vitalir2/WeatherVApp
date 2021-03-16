@@ -6,14 +6,13 @@ import io.github.vitalir2.weathervapp.utils.Converters
 import io.github.vitalir2.weathervapp.utils.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import java.io.IOException
 import javax.inject.Inject
 
 class WeatherForecastRemoteDataSourceImpl @Inject constructor(
     private val weatherApi: WeatherApi
 ) : WeatherForecastRemoteDataSource{
-
-    private val TAG = "WeatherData"
 
     override suspend fun getForecastWeather(
         latitude: Double,
@@ -22,7 +21,7 @@ class WeatherForecastRemoteDataSourceImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             return@withContext try {
                 val response = weatherApi.getForecastWeather(latitude, longitude)
-                //Log.d(TAG, "GetWeather")
+                Timber.d("Get weather")
                 if (response.isSuccessful) {
                     val converter = Converters()
                     val forecast = response.body()?.let { result ->

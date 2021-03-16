@@ -1,7 +1,9 @@
 package io.github.vitalir2.weathervapp.viewmodels
 
-import android.util.Log
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.vitalir2.weathervapp.R
 import io.github.vitalir2.weathervapp.data.models.WeatherForecast
@@ -10,6 +12,7 @@ import io.github.vitalir2.weathervapp.utils.Converters
 import io.github.vitalir2.weathervapp.utils.Resource
 import io.github.vitalir2.weathervapp.utils.isOneWord
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -49,7 +52,7 @@ class WeatherForecastViewModel @Inject constructor(
                     }
                 }
                 is Resource.Error -> {
-                    coordinates.message?.let { Log.d("HERE", "No connection or something else")}
+                    coordinates.message?.let { Timber.d("No connection or something else") }
                 }
             }
         }
@@ -84,8 +87,8 @@ class WeatherForecastViewModel @Inject constructor(
                     }
                 }
                 is Resource.Error -> {
-                    Log.d("HERE", "No connection or something else")
-                    result.message?.let { Log.d("HERE", it) }
+                    Timber.d("No connection or something else")
+                    result.message?.let { Timber.d(it) }
                     getWeatherForecastFromLocal(latitude, longitude)
                 }
                 is Resource.Loading -> {
@@ -97,7 +100,7 @@ class WeatherForecastViewModel @Inject constructor(
 
     private fun getWeatherForecastFromLocal(latitude: Double, longitude: Double) {
         viewModelScope.launch {
-            Log.d("HERE", "Now I'm in database, lat=$latitude, lon=$longitude")
+            Timber.d("Now I'm in database, lat=$latitude, lon=$longitude")
             _isLoading.postValue(true)
             try {
                 val result = weatherForecastRepository.getWeatherForecast(
@@ -107,7 +110,7 @@ class WeatherForecastViewModel @Inject constructor(
                 _isLoading.postValue(false)
                 _weatherGetState.postValue(true)
             } catch (exception: Throwable) {
-                Log.d("HERE", "Error: ${exception.message}")
+                Timber.d("Error: ${exception.message}")
                 _isLoading.postValue(false )
                 _weatherGetState.postValue(false)
             }

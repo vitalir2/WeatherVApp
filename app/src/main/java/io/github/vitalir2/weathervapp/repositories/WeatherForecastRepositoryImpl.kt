@@ -10,6 +10,7 @@ import io.github.vitalir2.weathervapp.utils.Resource
 import io.github.vitalir2.weathervapp.utils.toCoordinateLong
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import javax.inject.Inject
 
 class WeatherForecastRepositoryImpl @Inject constructor(
@@ -25,12 +26,12 @@ class WeatherForecastRepositoryImpl @Inject constructor(
             when (val response =
                 weatherForecastRemoteDataSource.getForecastWeather(latitude, longitude)) {
                 is Resource.Success -> {
-                    //   Log.d("Repo", "Success")
+                    Timber.d("Success")
                     if (response.data != null) {
-                        //   Log.d("Repo", response.data.get(0).temp.day.toString())
+                        Timber.d(response.data.forecasts[0].temp.day.toString())
                         Resource.Success(response.data)
                     } else {
-                        //   Log.d("Repo", "Nothing is here")
+                        Timber.d("Nothing is there")
                         Resource.Success(null)
                     }
                 }

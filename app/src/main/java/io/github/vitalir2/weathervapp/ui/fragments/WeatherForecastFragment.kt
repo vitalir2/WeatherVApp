@@ -16,8 +16,6 @@ import io.github.vitalir2.weathervapp.viewmodels.WeatherForecastViewModel
 @AndroidEntryPoint
 class WeatherForecastFragment : Fragment() {
 
-    private val TAG = "WeatherForecastFragment"
-
     private var _binding: FragmentWeatherForecastBinding? = null
     private val binding get() = _binding!!
     private val viewModel: WeatherForecastViewModel by viewModels()
