@@ -1,14 +1,12 @@
 package io.github.vitalir2.weathervapp.data.remote
 
-import android.util.Log
-import io.github.vitalir2.weathervapp.data.models.Daily
 import io.github.vitalir2.weathervapp.data.models.WeatherForecast
+import io.github.vitalir2.weathervapp.data.remote.responses.CoordinatesResponse
 import io.github.vitalir2.weathervapp.utils.Converters
 import io.github.vitalir2.weathervapp.utils.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.IOException
-import java.lang.Exception
 import javax.inject.Inject
 
 class WeatherForecastRemoteDataSourceImpl @Inject constructor(
@@ -31,22 +29,28 @@ class WeatherForecastRemoteDataSourceImpl @Inject constructor(
                         converter.fromRemoteToModelForecast(result)
                     }
                     Resource.Success(forecast)
-                   /* Log.d(TAG, "Success")
-                    response.body()?.forecasts.let { result ->
-                        if (result != null) {
-                            Log.d(TAG, result.get(0).temp.day.toString())
-                        } else {
-                            Log.d(TAG, "Result is null")
-                        }
-                        Resource.Success(result)
-
-
-                    }
-                    */
                 } else {
                    Resource.Success(null)
                 }
-            } catch (exception: Exception) {
+            } catch (exception: Throwable) {
+                when(exception) {
+                    is IOException -> Resource.Error("Network Failure")
+                    else -> Resource.Error(exception.message ?: "Error")
+                }
+            }
+        }
+
+    override suspend fun getCoordinatesByLocation(location: String): Resource<CoordinatesResponse?> =
+        withContext(Dispatchers.IO) {
+            return@withContext try {
+                val response = weatherApi.getCoordinatesByLocation(location)
+                if (response.isSuccessful) {
+                    val coordinates = response.body()
+                    Resource.Success(coordinates)
+                } else {
+                    Resource.Success(null)
+                }
+            } catch (exception: Throwable) {
                 when(exception) {
                     is IOException -> Resource.Error("Network Failure")
                     else -> Resource.Error(exception.message ?: "Error")

@@ -18,4 +18,6 @@
         <item>Воскресенье</item>
     </string-array>
     <string name="internet_error">Ошибка сети, повторите позже</string>
+    <string name="search_hint">Поиск погоды по городу (и стране)</string>
+    <string name="search_result_title">Прогноз погоды в городе %1$s</string>
 </resources>

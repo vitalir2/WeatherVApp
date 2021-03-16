@@ -4,6 +4,7 @@ import io.github.vitalir2.weathervapp.data.local.WeatherForecastLocalDataSource
 import io.github.vitalir2.weathervapp.data.local.entities.WeatherForecastEntity
 import io.github.vitalir2.weathervapp.data.models.WeatherForecast
 import io.github.vitalir2.weathervapp.data.remote.WeatherForecastRemoteDataSource
+import io.github.vitalir2.weathervapp.data.remote.responses.CoordinatesResponse
 import io.github.vitalir2.weathervapp.utils.Converters
 import io.github.vitalir2.weathervapp.utils.Resource
 import io.github.vitalir2.weathervapp.utils.toCoordinateLong
@@ -39,6 +40,24 @@ class WeatherForecastRepositoryImpl @Inject constructor(
                 else -> Resource.Loading()
             }
         }
+
+    override suspend fun getCoordinatesByLocation(query: String): Resource<CoordinatesResponse?> =
+        withContext(Dispatchers.IO) {
+            when (val response =
+                weatherForecastRemoteDataSource.getCoordinatesByLocation(query)) {
+                is Resource.Success -> {
+                    if (response.data != null) {
+                        Resource.Success(response.data)
+                    } else {
+                        Resource.Success(null)
+                    }
+                }
+                is Resource.Error -> {
+                    Resource.Error(response.message ?: "Error")
+                }
+                else -> Resource.Loading()
+            }
+    }
 
     override suspend fun insertWeatherForecast(weatherForecastEntity: WeatherForecastEntity) {
         weatherForecastLocalDataSource.insertWeatherForecast(weatherForecastEntity)

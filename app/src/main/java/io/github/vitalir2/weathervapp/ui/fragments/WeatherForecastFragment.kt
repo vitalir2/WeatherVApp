@@ -34,12 +34,6 @@ class WeatherForecastFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setRecyclerView()
-        // Temporary coordinates of Moscow
-        val moscowLatitude = 55.7512
-        val moscowLongitude = 37.6184
-        if (viewModel.forecast.value == null) {
-            viewModel.getWeatherForecast(moscowLatitude, moscowLongitude)
-        }
         observeForecasts()
     }
 

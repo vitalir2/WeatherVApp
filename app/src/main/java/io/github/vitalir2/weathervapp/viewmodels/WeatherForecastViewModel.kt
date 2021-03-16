@@ -3,10 +3,12 @@ package io.github.vitalir2.weathervapp.viewmodels
 import android.util.Log
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.vitalir2.weathervapp.R
 import io.github.vitalir2.weathervapp.data.models.WeatherForecast
 import io.github.vitalir2.weathervapp.repositories.WeatherForecastRepository
 import io.github.vitalir2.weathervapp.utils.Converters
 import io.github.vitalir2.weathervapp.utils.Resource
+import io.github.vitalir2.weathervapp.utils.isOneWord
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,12 +21,51 @@ class WeatherForecastViewModel @Inject constructor(
     val forecast: LiveData<WeatherForecast?> = _forecast
 
     private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading = _isLoading
+    val isLoading: LiveData<Boolean> = _isLoading
 
-    private val _weatherGetState = MutableLiveData<Boolean>()
-    val weatherGetState = _weatherGetState
+    private val _weatherGetState = MutableLiveData(true)
+    val weatherGetState: LiveData<Boolean> = _weatherGetState
 
-    fun getWeatherForecast(latitude: Double, longitude: Double) {
+    private val _cityName = MutableLiveData<String>()
+    val cityName: LiveData<String>  = _cityName
+
+    private val _weatherSearchTitleRes = MutableLiveData<Int>()
+    val weatherSearchTitleRes: LiveData<Int> = _weatherSearchTitleRes
+
+    init {
+        _weatherSearchTitleRes.value = R.string.search_result_title
+    }
+
+    fun searchWeatherForecast(searchQuery: String) {
+        viewModelScope.launch {
+            when (val coordinates =
+                weatherForecastRepository.getCoordinatesByLocation(searchQuery)) {
+                is Resource.Success -> {
+                    val result = coordinates.data?.get(0)
+                    if (result != null) {
+                        getWeatherForecast(result.lat, result.lon)
+                        // For localization, else we would get only English city names (result.name)
+                        _cityName.postValue(getMainLocationName(searchQuery))
+                    }
+                }
+                is Resource.Error -> {
+                    coordinates.message?.let { Log.d("HERE", "No connection or something else")}
+                }
+            }
+        }
+    }
+
+    private fun getMainLocationName(location: String): String {
+        return if (location.isOneWord()) {
+            location
+        } else {
+            location.dropLastWhile { character ->
+                character != ',' && character != ' '
+            }
+        }
+    }
+
+    private fun getWeatherForecast(latitude: Double, longitude: Double) {
         _isLoading.value = true
         viewModelScope.launch {
             when (val result =

@@ -1,16 +1,17 @@
 package io.github.vitalir2.weathervapp.repositories
 
 import io.github.vitalir2.weathervapp.data.local.entities.WeatherForecastEntity
-import io.github.vitalir2.weathervapp.data.models.Daily
 import io.github.vitalir2.weathervapp.data.models.WeatherForecast
+import io.github.vitalir2.weathervapp.data.remote.responses.CoordinatesResponse
 import io.github.vitalir2.weathervapp.utils.Resource
-import kotlinx.coroutines.flow.Flow
 
 interface WeatherForecastRepository {
     suspend fun getForecastWeather(
         latitude: Double,
         longitude: Double
     ): Resource<WeatherForecast?>
+
+    suspend fun getCoordinatesByLocation(query: String): Resource<CoordinatesResponse?>
 
     suspend fun insertWeatherForecast(weatherForecastEntity: WeatherForecastEntity)
 
